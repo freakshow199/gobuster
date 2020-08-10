@@ -206,7 +206,11 @@ func (client *HTTPClient) makeRequest(method, fullURL, host, cookie string, data
 
 	// add custom headers
 	for _, h := range client.headers {
-		req.Header.Set(h.Name, h.Value)
+		if strings.ToLower(h.Name) == "host" {
+			req.Host = h.Value
+		} else {
+			req.Header.Set(h.Name, h.Value)
+		}
 	}
 
 	if client.username != "" {
